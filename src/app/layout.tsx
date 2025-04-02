@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { homePath, ticketsPath } from "@/paths";
 import { LucideKanban } from "lucide-react";
@@ -30,18 +31,21 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Header />
-        <main
-          className="
-                min-h-screen flex-1
-                overflow-y-auto overflow-x-hidden
-                py-24 px-8
-                bg-secondary/20
-                flex flex-col
-              "
-        >
-          {children}
-        </main>
+        <ThemeProvider>
+          <Header />
+
+          <main
+            className="
+          min-h-screen flex-1
+          overflow-y-auto overflow-x-hidden
+          py-24 px-8
+          bg-secondary/20
+          flex flex-col
+          "
+          >
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

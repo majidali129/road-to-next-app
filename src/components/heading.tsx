@@ -10,7 +10,7 @@ const Heading = ({ title, description }: HeadingProps) => {
     <>
       <div className="px-8">
         <h2 className="font-bold text-3xl  tracking-tight">{title}</h2>
-        {description && <p className="text-sm text-zinc-300">{description}</p>}
+        {description && <p className="text-sm dark:text-zinc-300 text-zinc-600">{description}</p>}
       </div>
       <Separator />
     </>
