@@ -7,14 +7,14 @@ type TicketPageProps = {
 };
 
 const TicketPage = async ({ params }: TicketPageProps) => {
-  const ticketId = +(await params).ticketId;
+  const ticketId = (await params).ticketId;
   const ticket = await getTicket(ticketId);
 
   if (!ticket) notFound();
 
   return (
     <div className="flex justify-center animate-fade-in-from-top">
-      <TicketItem ticket={ticket} />
+      <TicketItem ticket={ticket} isDetail />
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ticketPath } from "@/paths";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ticketPath, ticketUpdatePath } from "@/paths";
+import { Ticket } from "@prisma/client";
 import clsx from "clsx";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { LucidePencil, LucideTrash, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
+import { deleteTicket } from "../actions/delete-ticket";
 import { TicketStatusIcon } from "../constants";
-import { Ticket } from "../types";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -15,16 +16,32 @@ type TicketItemProps = {
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   const detailsButton = (
     <Button asChild variant={"outline"} size={"icon"}>
-      <Link href={ticketPath(String(ticket.id))} className="text-sm">
+      <Link prefetch href={ticketPath(ticket.id)}>
         <SquareArrowOutUpRight className="h-4 w-4" />
+      </Link>
+    </Button>
+  );
+
+  const deleteButton = (
+    <form action={deleteTicket.bind(null, ticket.id)}>
+      <Button variant="outline" size={"icon"}>
+        <LucideTrash className="w-4 h-4" />
+      </Button>
+    </form>
+  );
+
+  const editButton = (
+    <Button asChild variant={"outline"} size={"icon"}>
+      <Link prefetch href={ticketUpdatePath(ticket.id)}>
+        <LucidePencil className="w-4 h-4" />
       </Link>
     </Button>
   );
   return (
     <div
       className={clsx(" flex w-full gap-x-1.5", {
-        "max-w-[420px]": isDetail,
-        "max-w-[570px]": !isDetail,
+        "max-w-[520px]": isDetail,
+        "max-w-[420px]": !isDetail,
       })}
     >
       <Card className="py-5 gap-4 rounded-md w-full">
@@ -45,7 +62,19 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </CardContent>
       </Card>
 
-      {isDetail && <div className="flex flex-col gap-y-1">{detailsButton}</div>}
+      <div className="flex flex-col gap-y-1">
+        {isDetail ? (
+          <>
+            {editButton}
+            {deleteButton}
+          </>
+        ) : (
+          <>
+            {detailsButton}
+            {editButton}
+          </>
+        )}
+      </div>
     </div>
   );
 };
