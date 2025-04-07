@@ -22,10 +22,10 @@ const TicektUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     <Form action={action} actionState={actionState}>
       <input type="hidden" name="id" defaultValue={ticket?.id} />
       <Label htmlFor="title">Title</Label>
-      <Input id="title" name="title" type="text" defaultValue={(actionState.payload?.get("title") as string) ?? ticket?.title[0]} />
+      <Input id="title" name="title" type="text" defaultValue={(actionState.payload?.get("title") as string) ?? ticket?.title} />
       <FieldError actionState={actionState} name="title" />
       <Label htmlFor="content">Content</Label>
-      <Textarea id="content" name="content" defaultValue={(actionState.payload?.get("content") as string) ?? ticket?.content[0]} />
+      <Textarea id="content" name="content" defaultValue={(actionState.payload?.get("content") as string) ?? ticket?.content} />
       <FieldError actionState={actionState} name="content" />
       <SubmitButton label={ticket ? "Update" : "Create"} />
     </Form>

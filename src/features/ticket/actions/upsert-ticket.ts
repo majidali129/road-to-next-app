@@ -1,5 +1,6 @@
 "use server";
 
+import { setCookieByKey } from "@/actions/cookies";
 import { ActionState, fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
 import { prisma } from "@/lib/prisma";
 import { ticketPath, ticketsPath } from "@/paths";
@@ -30,6 +31,7 @@ export const upsertTicket = async (id: string | undefined, _actionState: ActionS
   }
   revalidatePath(ticketsPath());
   if (id) {
+    setCookieByKey("toast", "Ticket updated successfully");
     redirect(ticketPath(id));
   }
 
