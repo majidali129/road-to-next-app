@@ -16,7 +16,7 @@ type TicketItemProps = {
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   const detailsButton = (
     <Button asChild variant={"outline"} size={"icon"}>
-      <Link prefetch href={ticketPath(ticket.id)}>
+      <Link href={ticketPath(ticket.id)}>
         <SquareArrowOutUpRight className="h-4 w-4" />
       </Link>
     </Button>
@@ -32,7 +32,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
   const editButton = (
     <Button asChild variant={"outline"} size={"icon"}>
-      <Link prefetch href={ticketUpdatePath(ticket.id)}>
+      <Link href={ticketUpdatePath(ticket.id)}>
         <LucidePencil className="w-4 h-4" />
       </Link>
     </Button>
