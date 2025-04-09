@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 
-export type ActionState = { status?: "SUCCESS" | "ERROR"; message: string; fieldErrors: Record<string, string[] | undefined>; payload?: FormData; timestamp: number };
+export type ActionState<T = unknown> = { status?: "SUCCESS" | "ERROR"; message: string; fieldErrors: Record<string, string[] | undefined>; payload?: FormData; timestamp: number; data?: T };
 
 export const Empty_Action_State: ActionState = {
   message: "",
@@ -9,7 +9,7 @@ export const Empty_Action_State: ActionState = {
   timestamp: Date.now(),
 };
 
-export const fromErrorToActionState = (error: unknown, formData: FormData): ActionState => {
+export const fromErrorToActionState = (error: unknown, formData?: FormData): ActionState => {
   if (error instanceof ZodError) {
     return {
       status: "ERROR",
@@ -36,6 +36,6 @@ export const fromErrorToActionState = (error: unknown, formData: FormData): Acti
     };
 };
 
-export const toActionState = (status: ActionState["status"], message: string): ActionState => {
-  return { status, message, fieldErrors: {}, timestamp: Date.now() };
+export const toActionState = (status: ActionState["status"], message: string, formData?: FormData, data?: unknown): ActionState => {
+  return { status, message, fieldErrors: {}, timestamp: Date.now(), payload: formData, data };
 };

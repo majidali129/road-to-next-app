@@ -1,11 +1,8 @@
 import Header from "@/components/header";
+import RedirectToast from "@/components/redirect-toast";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { homePath, ticketsPath } from "@/paths";
-import { LucideKanban } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -47,6 +44,7 @@ export default function RootLayout({
             {children}
           </main>
           <Toaster expand position="top-right" richColors />
+          <RedirectToast />
         </ThemeProvider>
       </body>
     </html>

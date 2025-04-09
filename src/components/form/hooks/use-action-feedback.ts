@@ -7,8 +7,8 @@ type useActionFeedbackOptions = {
   onError?: (onArgs: OnArgs) => void;
 };
 const useActionFeedback = (actionState: ActionState, options: useActionFeedbackOptions) => {
-  const prevTimestamp = useRef(actionState.timestamp);
-  const isUpdate = actionState.timestamp !== prevTimestamp.current;
+  const prevTimestamp = useRef(actionState?.timestamp);
+  const isUpdate = actionState?.timestamp !== prevTimestamp.current;
   useEffect(() => {
     if (!isUpdate) return;
     if (actionState.status === "SUCCESS") {
@@ -19,7 +19,7 @@ const useActionFeedback = (actionState: ActionState, options: useActionFeedbackO
       options.onError?.({ actionState });
     }
 
-    prevTimestamp.current = actionState.timestamp;
+    prevTimestamp.current = actionState?.timestamp;
   }, [actionState, options, isUpdate]);
 };
 

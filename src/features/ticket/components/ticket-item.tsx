@@ -1,12 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ticketPath, ticketUpdatePath } from "@/paths";
 import { Ticket } from "@prisma/client";
 import clsx from "clsx";
-import { LucidePencil, LucideTrash, SquareArrowOutUpRight } from "lucide-react";
+import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
-import { deleteTicket } from "../actions/delete-ticket";
+import { toCurrencyFromCent } from "@/app/utils/currency";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ticketPath, ticketUpdatePath } from "@/paths";
 import { TicketStatusIcon } from "../constants";
+import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -22,14 +23,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </Button>
   );
 
-  const deleteButton = (
-    <form action={deleteTicket.bind(null, ticket.id)}>
-      <Button variant="outline" size={"icon"}>
-        <LucideTrash className="w-4 h-4" />
-      </Button>
-    </form>
-  );
-
   const editButton = (
     <Button asChild variant={"outline"} size={"icon"}>
       <Link href={ticketUpdatePath(ticket.id)}>
@@ -37,6 +30,18 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
+
+  const moreMenu = (
+    <TicketMoreMenu
+      ticket={ticket}
+      trigger={
+        <Button variant="outline" size="icon">
+          <LucideMoreVertical className="w-4 h-4" />
+        </Button>
+      }
+    />
+  );
+
   return (
     <div
       className={clsx(" flex w-full gap-x-1.5", {
@@ -60,13 +65,17 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
             {ticket.content}
           </span>
         </CardContent>
+        <CardFooter className="flex justify-between">
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">{toCurrencyFromCent(ticket.bounty)}</p>
+        </CardFooter>
       </Card>
 
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
           <>
             {editButton}
-            {deleteButton}
+            {moreMenu}
           </>
         ) : (
           <>
