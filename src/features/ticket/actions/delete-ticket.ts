@@ -1,11 +1,11 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { setCookieByKey } from "@/actions/cookies";
 import { fromErrorToActionState } from "@/components/form/utils/to-action-state";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export const deleteTicket = async (id: string) => {
   try {
