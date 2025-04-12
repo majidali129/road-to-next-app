@@ -2,6 +2,17 @@ import { PrismaClient, Ticket } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const users = [
+  {
+    userName: "admin",
+    email: "admin@admin.com",
+  },
+  {
+    userName: "user",
+    email: "user@user.com",
+  },
+];
+
 const tickets = [
   {
     title: "Fix login bug",
@@ -36,8 +47,24 @@ const tickets = [
 const seed = async () => {
   const start = performance.now();
   console.log("Seeding start!");
+  const hashedPassword = "asdf1234";
+
+  await prisma.user.deleteMany();
   await prisma.ticket.deleteMany();
-  await prisma.ticket.createMany({ data: tickets });
+
+  const dbUsers = await prisma.user.createManyAndReturn({
+    data: users.map((user) => ({ ...user, hashedPassword })),
+  });
+
+  console.log(dbUsers);
+
+  const dbTickets = await prisma.ticket.createManyAndReturn({
+    data: tickets.map((ticket) => ({
+      ...ticket,
+      userId: dbUsers[0].id,
+    })),
+  });
+  console.log(dbTickets);
   const end = performance.now();
   console.log(`Seeding end ${end - start}ms`);
 };

@@ -1,16 +1,24 @@
-import { Ticket } from "@prisma/client";
-import clsx from "clsx";
-import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
-import Link from "next/link";
-import { toCurrencyFromCent } from "@/app/utils/currency";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ticketPath, ticketUpdatePath } from "@/paths";
+import { toCurrencyFromCent } from "@/utils/currency";
+import { Prisma } from "@prisma/client";
+import clsx from "clsx";
+import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
+import Link from "next/link";
 import { TicketStatusIcon } from "../constants";
 import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
-  ticket: Ticket;
+  ticket: Prisma.TicketGetPayload<{
+    include: {
+      user: {
+        select: {
+          userName: true;
+        };
+      };
+    };
+  }>;
   isDetail?: boolean;
 };
 
@@ -22,6 +30,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
+  console.log(ticket);
 
   const editButton = (
     <Button asChild variant={"outline"} size={"icon"}>
@@ -66,7 +75,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </span>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.userName}
+          </p>
           <p className="text-sm text-muted-foreground">{toCurrencyFromCent(ticket.bounty)}</p>
         </CardFooter>
       </Card>

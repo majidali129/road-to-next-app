@@ -10,7 +10,7 @@ import SubmitButton from "@/components/form/submit-button";
 import { Empty_Action_State } from "@/components/form/utils/to-action-state";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { fromCent } from "../../../app/utils/currency";
+import { fromCent } from "../../../utils/currency";
 import { upsertTicket } from "../actions/upsert-ticket";
 
 type TicketUpsertFormProps = {
