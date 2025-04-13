@@ -1,11 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAuth } from "@/features/auth/queries/get-auth";
+import { isOwner } from "@/features/auth/utils/is-owner";
+import { ticketPath, ticketUpdatePath } from "@/paths";
+import { toCurrencyFromCent } from "@/utils/currency";
 import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ticketPath, ticketUpdatePath } from "@/paths";
-import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketStatusIcon } from "../constants";
 import { TicketMoreMenu } from "./ticket-more-menu";
 
@@ -22,7 +24,10 @@ type TicketItemProps = {
   isDetail?: boolean;
 };
 
-const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
+const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
+  const { user } = await getAuth();
+  const itTicketOwner = await isOwner(user, ticket);
+
   const detailsButton = (
     <Button asChild variant={"outline"} size={"icon"}>
       <Link href={ticketPath(ticket.id)}>
@@ -30,17 +35,16 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
-  console.log(ticket);
 
-  const editButton = (
+  const editButton = itTicketOwner ? (
     <Button asChild variant={"outline"} size={"icon"}>
       <Link href={ticketUpdatePath(ticket.id)}>
         <LucidePencil className="w-4 h-4" />
       </Link>
     </Button>
-  );
+  ) : null;
 
-  const moreMenu = (
+  const moreMenu = itTicketOwner ? (
     <TicketMoreMenu
       ticket={ticket}
       trigger={
@@ -49,7 +53,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </Button>
       }
     />
-  );
+  ) : null;
 
   return (
     <div

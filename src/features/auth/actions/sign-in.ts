@@ -1,13 +1,13 @@
 "use server";
 
-import { verify } from "@node-rs/argon2";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { z } from "zod";
 import { ActionState, fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
+import { verify } from "@node-rs/argon2";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
 const signInSchema = z.object({
   email: z.string().min(1, "Email is required").max(191).email(),
@@ -26,7 +26,8 @@ export const signInUser = async (_actionState: ActionState, formData: FormData) 
 
     if (!user) return toActionState("ERROR", "Incorrect email or password", formData);
 
-    const validPassword = await verify(user.hashedPassword, password);
+    // const validPassword = await verify(user.hashedPassword, password);
+    const validPassword = user.hashedPassword === password;
 
     if (!validPassword) return toActionState("ERROR", "Incorrect email or password", formData);
 

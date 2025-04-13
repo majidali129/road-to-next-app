@@ -1,14 +1,15 @@
 "use server";
 
+import { setCookieByKey } from "@/actions/cookies";
+import { ActionState, fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
+import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
+import { isOwner } from "@/features/auth/utils/is-owner";
+import { prisma } from "@/lib/prisma";
+import { ticketPath, ticketsPath } from "@/paths";
+import { toCent } from "@/utils/currency";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { setCookieByKey } from "@/actions/cookies";
-import { ActionState, fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
-import { getAuth } from "@/features/auth/queries/get-auth";
-import { prisma } from "@/lib/prisma";
-import { signInPath, ticketPath, ticketsPath } from "@/paths";
-import { toCent } from "@/utils/currency";
 
 const ticketUpsertSchema = z.object({
   title: z.string().min(1, { message: "Title must be at least 1 character" }).max(191, { message: "Title must be between 1 and 191 characters." }),
@@ -17,17 +18,26 @@ const ticketUpsertSchema = z.object({
   bounty: z.coerce.number().positive(),
 });
 export const upsertTicket = async (id: string | undefined, _actionState: ActionState, formData: FormData) => {
+  const { user } = await getAuthOrRedirect();
   try {
+    if (id) {
+      const ticket = await prisma.ticket.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!ticket || !(await isOwner(user, ticket))) {
+        return toActionState("ERROR", "Not authorized");
+      }
+    }
+
     const data = ticketUpsertSchema.parse({
       title: formData.get("title"),
       content: formData.get("content"),
       deadline: formData.get("deadline"),
       bounty: formData.get("bounty"),
     });
-
-    const { user } = await getAuth();
-
-    if (!user) redirect(signInPath());
 
     const dbData = {
       ...data,
@@ -37,7 +47,7 @@ export const upsertTicket = async (id: string | undefined, _actionState: ActionS
 
     await prisma.ticket.upsert({
       where: {
-        id: id || "",
+        id: id ?? "non-existent-id",
       },
       update: dbData,
       create: dbData,
