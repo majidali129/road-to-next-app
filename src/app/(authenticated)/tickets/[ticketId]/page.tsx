@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { getTicket } from "@/features/queries/get-ticket";
 import TicketItem from "@/features/ticket/components/ticket-item";
 import { homePath } from "@/paths";
-import { Breadcrumbs } from "../../../components/breadcrumbs";
+import { Breadcrumbs } from "../../../../components/breadcrumbs";
 
 type TicketPageProps = {
   params: Promise<{ ticketId: string }>;
