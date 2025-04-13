@@ -1,9 +1,9 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOut } from "@/features/auth/actions/sign-out";
-import { accountPasswordPath, accountProfilePath } from "@/paths";
 import { User } from "@prisma/client";
 import { LucideLock, LucideLogOut, LucideUser } from "lucide-react";
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/features/auth/actions/sign-out";
+import { accountPasswordPath, accountProfilePath } from "@/paths";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
 type AccountDropdownProps = {

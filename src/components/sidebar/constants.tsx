@@ -1,5 +1,5 @@
-import { accountProfilePath, homePath, ticketsPath } from "@/paths";
 import { LucideBook, LucideCircleUser, LucideLibrary } from "lucide-react";
+import { accountProfilePath, homePath, ticketsPath } from "@/paths";
 import { NavItem } from "./types";
 
 export const navItems: NavItem[] = [

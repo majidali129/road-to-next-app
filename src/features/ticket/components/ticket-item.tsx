@@ -1,13 +1,13 @@
+import { Prisma } from "@prisma/client";
+import clsx from "clsx";
+import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { ticketPath, ticketUpdatePath } from "@/paths";
 import { toCurrencyFromCent } from "@/utils/currency";
-import { Prisma } from "@prisma/client";
-import clsx from "clsx";
-import { LucideMoreVertical, LucidePencil, SquareArrowOutUpRight } from "lucide-react";
-import Link from "next/link";
 import { TicketStatusIcon } from "../constants";
 import { TicketMoreMenu } from "./ticket-more-menu";
 

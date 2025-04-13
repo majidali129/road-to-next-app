@@ -1,11 +1,11 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import { passwordForgotPath, signInPath, signUpPath } from "@/paths";
 import { getActivePath } from "@/utils/get-active-path";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
 import { navItems } from "../constants";
 import { SidebarItem } from "./sidebar-item";
 

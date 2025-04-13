@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CardCompact } from "@/components/card-compact";
 import { Separator } from "@/components/ui/separator";
@@ -6,7 +7,6 @@ import { isOwner } from "@/features/auth/utils/is-owner";
 import { getTicket } from "@/features/queries/get-ticket";
 import { TicektUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
 import { homePath, ticketPath } from "@/paths";
-import { notFound } from "next/navigation";
 
 type TicketEditFormProps = {
   params: Promise<{ ticketId: string }>;
