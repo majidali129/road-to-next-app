@@ -81,6 +81,7 @@
 
   --animate-fade-in-from-top: fade-in-from-top 0.9s ease-out;
   --animate-header-from-top: header-from-top 0.9s ease-out;
+  --animate-sidebar-from-left: sidebar-from-left 0.8s ease-out;
 
   --color-sidebar-ring: var(--sidebar-ring);
 
@@ -161,6 +162,14 @@
     to {
       transform: translateY(0);
       opacity: 1;
+    }
+  }
+  @keyframes sidebar-from-left {
+    from {
+      transform: translateX(-30%);
+    }
+    to {
+      transform: translateX(0);
     }
   }
 
