@@ -1,11 +1,12 @@
-import "./globals.css";
+import { Sidebar } from "@/app/_navigation/sidebar/components/sidebar";
+import RedirectToast from "@/components/redirect-toast";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
-import Header from "@/components/header";
-import RedirectToast from "@/components/redirect-toast";
-import { Sidebar } from "@/components/sidebar/components/sidebar";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import Header from "./_navigation/header";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,26 +31,28 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <Header />
+        <NuqsAdapter>
+          <ThemeProvider>
+            <Header />
 
-          <div className="flex border-collapse h-screen">
-            <Sidebar />
-            <main
-              className="
+            <div className="flex border-collapse h-screen">
+              <Sidebar />
+              <main
+                className="
           min-h-screen flex-1
           overflow-y-auto overflow-x-hidden
           py-24 px-8
           bg-secondary/20
           flex flex-col
           "
-            >
-              {children}
-            </main>
-          </div>
-          <Toaster expand position="top-right" richColors />
-          <RedirectToast />
-        </ThemeProvider>
+              >
+                {children}
+              </main>
+            </div>
+            <Toaster expand position="top-right" richColors />
+            <RedirectToast />
+          </ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
